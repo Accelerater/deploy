@@ -37,7 +37,7 @@ spec:
         env:
         - name: JAVA_OPTS
           value: "-Xms1400m -Xmx1400m -XX:+UseCGroupMemoryLimitForHeap \
-            -Deureka.service.url=http://all-in-one-dev.dmptesting.xyz:8761 \
+            -Deureka.service.url=http://dmp-eureka:8761/eureka \
             -Dapollo_profile=github \
             -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloConfigDB?characterEncoding=utf8 \
             -Dspring.datasource.username=root -Dspring.datasource.password=JKNW23jnwxwNS"
