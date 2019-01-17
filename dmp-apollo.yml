@@ -20,8 +20,8 @@ spec:
         name: apollo-configservice
         resources:
           requests:
-            cpu: "1000m"
-            memory: "1500Mi"
+            cpu: "800m"
+            memory: "1200Mi"
           limits:
             cpu: "1000m"
             memory: "1500Mi"
@@ -79,11 +79,11 @@ spec:
           mountPath: /opt/logs
         resources:
           requests:
-            cpu: "1000m"
-            memory: "1800Mi"
+            cpu: "800m"
+            memory: "1200Mi"
           limits:
-            cpu: "1000m"
-            memory: "1800Mi"
+            cpu: "800m"
+            memory: "1500Mi"
         ports:
         - containerPort: 8090
           name: adminservice
@@ -130,10 +130,10 @@ spec:
           mountPath: /opt/logs
         resources:
           requests:
-            cpu: "1000m"
-            memory: "1500Mi"
+            cpu: "800m"
+            memory: "1200Mi"
           limits:
-            cpu: "1000m"
+            cpu: "800m"
             memory: "1500Mi"
         ports:
         - containerPort: 8070
