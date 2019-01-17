@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dmp-apollo-adminservice
+  labels:
+    app: dmp-apollo-adminservice
+spec:
+  selector:
+    matchLabels:
+      app: dmp-apollo-adminservice
+  template:
+    metadata:
+      labels:
+        app: dmp-apollo-adminservice
+    spec:
+      imagePullSecrets:
+      - name: harbor
+      containers:
+      - image: {{ dmp-apollo-adminservice.image }}
+        name: apollo-adminservice
+        volumeMounts:
+        - name: host-time
+          mountPath: /etc/localtime
+          readOnly: true
+        - name: apollo-logs
+          mountPath: /opt/logs
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "1800Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1800Mi"
+        ports:
+        - containerPort: 8090
+          name: adminservice
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms1400m -Xmx1400m -XX:+UseCGroupMemoryLimitForHeap \
+            -Deureka.service.url=http://all-in-one-dev.dmptesting.xyz:8761 \
+            -Dapollo_profile=github \
+            -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloConfigDB?characterEncoding=utf8 \
+            -Dspring.datasource.username=root -Dspring.datasource.password=JKNW23jnwxwNS"
+      volumes:
+      - name: host-time
+        hostPath:
+          path: /etc/localtime
+      - name: apollo-logs
+        hostPath:
+          path: /root/dmp-logs/apollo
