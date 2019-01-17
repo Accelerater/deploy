@@ -143,11 +143,10 @@ spec:
           value: "-Xms750m -Xmx750m -XX:+UseCGroupMemoryLimitForHeap \
             -Deureka.client.serviceUrl.defaultZone=http://dmp-eureka:8761/eureka \
             -Dapollo_profile=github,dmp \
+            -Ddmp_meta=http://dmp-eureka:8080 \
             -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloPortalDB?characterEncoding=utf8 \
             -Dspring.datasource.username=root \
             -Dspring.datasource.password=JKNW23jnwxwNS"
-        - name: DEV_META
-          value: http://dmp-eureka:8080
       volumes:
       - name: host-time
         hostPath:
