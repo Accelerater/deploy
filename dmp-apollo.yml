@@ -147,7 +147,7 @@ spec:
             -Dspring.datasource.username=root \
             -Dspring.datasource.password=JKNW23jnwxwNS"
         - name: DEV_META
-          value: http://localhost:8080
+          value: http://dmp-eureka:8080
       volumes:
       - name: host-time
         hostPath:
