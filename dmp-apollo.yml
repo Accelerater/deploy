@@ -1,0 +1,157 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dmp-apollo-configservice
+  labels:
+    app: dmp-apollo-configservice
+spec:
+  selector:
+    matchLabels:
+      app: dmp-apollo-configservice
+  template:
+    metadata:
+      labels:
+        app: dmp-apollo-configservice
+    spec:
+      imagePullSecrets:
+      - name: harbor
+      containers:
+      - image: {{ dmp-apollo-configservice.image }}
+        name: apollo-configservice
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "1500Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1500Mi"
+        ports:
+        - containerPort: 8080
+          name: configservice
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms1000m -Xmx1000m \
+          -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap \
+          -Deureka.service.url=http://dmp-eureka:8761/eureka \
+          -Dapollo_profile=github \
+          -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloConfigDB?characterEncoding=utf8 \
+          -Dspring.datasource.username=root \
+          -Dspring.datasource.password=JKNW23jnwxwNS"
+        volumeMounts:
+        - name: host-time
+          mountPath: /etc/localtime
+          readOnly: true
+        - name: apollo-logs
+          mountPath: /opt/logs
+      volumes:
+      - name: host-time
+        hostPath:
+          path: /etc/localtime
+      - name: apollo-logs
+        hostPath:
+          path: /root/dmp-logs/apollo
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dmp-apollo-adminservice
+  labels:
+    app: dmp-apollo-adminservice
+spec:
+  selector:
+    matchLabels:
+      app: dmp-apollo-adminservice
+  template:
+    metadata:
+      labels:
+        app: dmp-apollo-adminservice
+    spec:
+      imagePullSecrets:
+      - name: harbor
+      containers:
+      - image: {{ dmp-apollo-adminservice.image }}
+        name: apollo-adminservice
+        volumeMounts:
+        - name: host-time
+          mountPath: /etc/localtime
+          readOnly: true
+        - name: apollo-logs
+          mountPath: /opt/logs
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "1800Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1800Mi"
+        ports:
+        - containerPort: 8090
+          name: adminservice
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms1400m -Xmx1400m -XX:+UseCGroupMemoryLimitForHeap \
+            -Deureka.service.url=http://dmp-eureka:8761/eureka \
+            -Dapollo_profile=github \
+            -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloConfigDB?characterEncoding=utf8 \
+            -Dspring.datasource.username=root -Dspring.datasource.password=JKNW23jnwxwNS"
+      volumes:
+      - name: host-time
+        hostPath:
+          path: /etc/localtime
+      - name: apollo-logs
+        hostPath:
+          path: /root/dmp-logs/apollo
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dmp-apollo-portal
+  labels:
+    app: dmp-apollo-portal
+spec:
+  selector:
+    matchLabels:
+      app: dmp-apollo-portal
+  template:
+    metadata:
+      labels:
+        app: dmp-apollo-portal
+    spec:
+      imagePullSecrets:
+      - name: harbor
+      containers:
+      - image: {{ dmp-apollo-portal.image }}
+        name: apollo-portal
+        volumeMounts:
+        - name: host-time
+          mountPath: /etc/localtime
+          readOnly: true
+        - name: apollo-logs
+          mountPath: /opt/logs
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "1500Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1500Mi"
+        ports:
+        - containerPort: 8070
+          name: portal
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms750m -Xmx750m -XX:+UseCGroupMemoryLimitForHeap \
+            -Deureka.client.serviceUrl.defaultZone=http://dmp-eureka:8761/eureka \
+            -Dapollo_profile=github,dmp \
+            -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloPortalDB?characterEncoding=utf8 \
+            -Dspring.datasource.username=root \
+            -Dspring.datasource.password=JKNW23jnwxwNS"
+        - name: DEV_META
+          value: http://localhost:8080
+      volumes:
+      - name: host-time
+        hostPath:
+          path: /etc/localtime
+      - name: apollo-logs
+        hostPath:
+          path: /root/dmp-logs/apollo
