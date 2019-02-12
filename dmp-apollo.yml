@@ -31,7 +31,6 @@ spec:
         env:
         - name: JAVA_OPTS
           value: "-Xms1000m -Xmx1000m \
-          -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap \
           -Deureka.service.url=http://dmp-eureka:8761/eureka \
           -Dapollo_profile=github \
           -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloConfigDB?characterEncoding=utf8 \
@@ -89,7 +88,7 @@ spec:
           name: adminservice
         env:
         - name: JAVA_OPTS
-          value: "-Xms1400m -Xmx1400m -XX:+UseCGroupMemoryLimitForHeap \
+          value: "-Xms1400m -Xmx1400m \
             -Deureka.service.url=http://dmp-eureka:8761/eureka \
             -Dapollo_profile=github \
             -Dspring.datasource.url=jdbc:mysql://mysql:3306/ApolloConfigDB?characterEncoding=utf8 \
@@ -140,7 +139,7 @@ spec:
           name: portal
         env:
         - name: JAVA_OPTS
-          value: "-Xms750m -Xmx750m -XX:+UseCGroupMemoryLimitForHeap \
+          value: "-Xms750m -Xmx750m \
             -Deureka.client.serviceUrl.defaultZone=http://dmp-eureka:8761/eureka \
             -Dapollo_profile=github,dmp \
             -Ddmp_meta=http://dmp-eureka:8080 \
